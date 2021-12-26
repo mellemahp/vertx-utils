@@ -1,0 +1,3 @@
+# See https://github.com/bazelbuild/bazel/issues/12837.
+build --nojava_header_compilation
+test --nojava_header_compilation
