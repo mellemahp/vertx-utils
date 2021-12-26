@@ -91,6 +91,7 @@ java_library(
         # Tries to ignore dagger-generated classes
         "-XepOpt:NullAway:UnannotatedSubPackages=com.hmellema.vertxutils.routing",
     ],
+    visibility = ["//visibility:public"],
 )
 
 java_library(
