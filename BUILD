@@ -7,7 +7,7 @@ java_library(
         ":lombok_plugin",
     ],
     exports = [
-        "@maven//:org_projectlombok_lombok",
+        "@build_deps//:org_projectlombok_lombok",
     ],
 )
 
@@ -22,7 +22,7 @@ java_plugin(
 java_import(
     name = "lombok_jar",
     jars = [
-        "@maven//:v1/https/repo1.maven.org/maven2/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar",
+        "@build_deps//:v1/https/repo1.maven.org/maven2/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar",
     ],
 )
 
@@ -34,7 +34,7 @@ java_plugin(
     generates_api = 1,
     processor_class = "dagger.internal.codegen.ComponentProcessor",
     deps = [
-        "@maven//:com_google_dagger_dagger_compiler",
+        "@build_deps//:com_google_dagger_dagger_compiler",
     ],
 )
 
@@ -42,8 +42,8 @@ java_library(
     name = "dagger_lib",
     exported_plugins = ["dagger_plugin"],
     exports = [
-        "@maven//:com_google_dagger_dagger",
-        "@maven//:javax_inject_javax_inject",
+        "@build_deps//:com_google_dagger_dagger",
+        "@build_deps//:javax_inject_javax_inject",
     ],
 )
 
@@ -53,7 +53,7 @@ java_library(
 java_plugin(
     name = "nullaway",
     deps = [
-        "@maven//:com_uber_nullaway_nullaway",
+        "@build_deps//:com_uber_nullaway_nullaway",
     ],
 )
 
@@ -73,6 +73,65 @@ java_library(
     visibility = ["//visibility:public"],
 )
 
+#########################
+# Logging Deps
+#########################
+# This can be re-used by other libraries that depend on this 
+# utils library
+java_library(
+    name = "runtime_logging_deps",
+    exports = [
+        "@logging_deps//:net_logstash_logback_logstash_logback_encoder",
+    ],
+    visibility = ["//visibility:public"]
+)
+
+java_library(
+    name = "library_logging_deps",
+    exports = [
+        "@logging_deps//:org_slf4j_slf4j_api",
+        "@logging_deps//:ch_qos_logback_logback_classic",
+        "@logging_deps//:net_logstash_logback_logstash_logback_encoder",
+        "@logging_deps//:io_reactiverse_reactiverse_contextual_logging",
+    ],
+    visibility = ["//visibility:public"]
+)
+
+
+#########################
+# Prometheus Metrics Deps
+#########################
+# This can be re-used by other libraries that depend on this 
+# utils library
+java_library(
+    name = "metrics_dependencies",
+    exports = [
+        # metrics
+        "@metrics_deps//:io_vertx_vertx_micrometer_metrics",
+        "@metrics_deps//:io_micrometer_micrometer_registry_prometheus",
+        "@metrics_deps//:io_prometheus_simpleclient_vertx",
+        "@metrics_deps//:io_prometheus_simpleclient",
+    ],
+    visibility = ["//visibility:public"]
+)
+
+##################
+# Vertx Base Deps
+##################
+# This can be re-used by other libraries that depend on this 
+# utils library
+java_library(
+    name = "vertx_core_deps",
+    exports = [
+        "@vertx_core//:io_vertx_vertx_core",
+        "@vertx_core//:io_vertx_vertx_web_openapi",
+        "@vertx_core//:io_vertx_vertx_web_validation",
+        "@vertx_core//:io_vertx_vertx_web",
+        "@vertx_core//:io_vertx_vertx_json_schema",
+    ],
+    visibility = ["//visibility:public"]
+)
+
 #######################
 # Utils Lib
 #################
@@ -81,35 +140,35 @@ java_library(
     srcs = glob(["src/**/*.java"]),
     deps = [
         ":preprocessors",
-        ":util_deps"
+        ":library_logging_deps",
+        ":vertx_core_deps",
+        # jackson deps
+        "@maven//:com_fasterxml_jackson_core_jackson_core",
+        "@maven//:com_fasterxml_jackson_core_jackson_databind",
     ],
     javacopts = [
         # Sets nullaway errors to break build
         "-Xep:NullAway:ERROR",
         # sets packages for nullaway to run on
-        "-XepOpt:NullAway:AnnotatedPackages=com.hmellema",
+        "-XepOpt:NullAway:AnnotatedPackages=com.hmellema.vertxutils",
         # Tries to ignore dagger-generated classes
         "-XepOpt:NullAway:UnannotatedSubPackages=com.hmellema.vertxutils.routing",
     ],
     visibility = ["//visibility:public"],
 )
 
+
+#########################################
+# Common Deps for reuse in vertx projects 
+##########################################
 java_library(
-    name = "util_deps",
+    name = "common",
     exports = [
-        # jackson deps
-        "@maven//:com_fasterxml_jackson_core_jackson_core",
-        "@maven//:com_fasterxml_jackson_core_jackson_databind",
-        # vertx
-        "@maven//:io_vertx_vertx_core",
-        "@maven//:io_vertx_vertx_web_openapi",
-        "@maven//:io_vertx_vertx_web_validation",
-        "@maven//:io_vertx_vertx_web",
-        "@maven//:io_vertx_vertx_json_schema",
-        #contextual logging
-        "@maven//:io_reactiverse_reactiverse_contextual_logging",
-        # base logging
-        "@maven//:org_slf4j_slf4j_api",
+        ":library_logging_deps",
+        ":preprocessors",
+        ":vertx_core_deps",
+        ":vertx_utils",
+        ":metrics_dependencies"
     ],
+    visibility = ["//visibility:public"]
 )
-######
