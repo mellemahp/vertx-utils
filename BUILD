@@ -143,8 +143,8 @@ java_library(
         ":library_logging_deps",
         ":vertx_core_deps",
         # jackson deps
-        "@maven//:com_fasterxml_jackson_core_jackson_core",
-        "@maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@deps//:com_fasterxml_jackson_core_jackson_core",
+        "@deps//:com_fasterxml_jackson_core_jackson_databind",
     ],
     javacopts = [
         # Sets nullaway errors to break build

@@ -17,6 +17,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 MAVEN_REPOS = ["https://repo1.maven.org/maven2"]
 
 maven_install(
+    name = "deps",
     artifacts = [
         # jackson
         "com.fasterxml.jackson.core:jackson-databind:2.12.4",
