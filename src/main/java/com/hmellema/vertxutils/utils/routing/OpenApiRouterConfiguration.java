@@ -4,6 +4,7 @@ import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.Operation;
 import io.vertx.ext.web.openapi.RouterBuilder;
+
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -16,14 +17,14 @@ import lombok.Singular;
  * rest operations to configure as well as any number of global handlers.
  */
 @Builder
-public class RouterConfiguration {
+public class OpenApiRouterConfiguration {
 
   @NonNull
   private final Map<String, OperationConfiguration> operationMap;
 
   @Singular
   private final List<Handler<RoutingContext>> globalHandlers;
-
+  
   /**
  * Configure a RouterBuilder with the specified global handlers and 
  * operation configurations.

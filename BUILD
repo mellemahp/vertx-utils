@@ -48,6 +48,19 @@ java_library(
 )
 
 #######################
+# Vertx Codegen
+#######################
+java_plugin(
+    name = "vertx_codegen",
+    generates_api = 1,
+    processor_class = "io.vertx.codegen.CodeGenProcessor",
+    deps = [
+        "@build_deps//:io_vertx_vertx_codegen",
+        "@build_deps//:io_vertx_vertx_service_proxy",
+    ],
+)
+
+#######################
 # Nullaway
 #######################
 java_plugin(
@@ -67,6 +80,7 @@ java_library(
     exports = [
         # NOTE: ORDER OF PLUGINS DOES MATTER
         ":lombok",
+        ":vertx_codegen",
         ":dagger_lib",
         ":nullaway",
     ],

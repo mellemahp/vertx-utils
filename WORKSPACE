@@ -44,6 +44,9 @@ maven_install(
         "com.uber.nullaway:nullaway:0.3.4",
         # lombok
         "org.projectlombok:lombok:1.18.22",
+        # vertx codegen
+        "io.vertx:vertx-codegen:4.2.4",
+        "io.vertx:vertx-service-proxy:4.2.4"
     ],
     repositories = MAVEN_REPOS,
 )
