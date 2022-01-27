@@ -16,10 +16,11 @@ import io.vertx.ext.web.openapi.RouterBuilder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.AccessLevel; 
 
 @Slf4j
-@RequiredArgsConstructor
-public class OpenApiServiceVerticle extends AbstractVerticle {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class AbstractOpenApiServiceVerticle extends AbstractVerticle {
 
   @NonNull
   private final HttpServerOptions serverOptions;
@@ -30,8 +31,7 @@ public class OpenApiServiceVerticle extends AbstractVerticle {
   @NonNull
   private final String openApiSpecLocation;
 
-  @NonNull
-  private final String serviceName;
+  abstract String getServiceName();
 
   @Override
   public void start(final @NonNull Promise<Void> startPromise)
@@ -40,10 +40,10 @@ public class OpenApiServiceVerticle extends AbstractVerticle {
       .create(vertx, openApiSpecLocation)
       .onSuccess(
         routerBuilder -> {
-          log.info("Configuring {} Service", serviceName);
+          log.info("Configuring {} Service", getServiceName());
           routerConfiguration.configure(routerBuilder);
 
-          log.info("Deploying {} Service", serviceName);
+          log.info("Deploying {} Service", getServiceName());
           Router router = routerBuilder.createRouter();
           deployHttpServerWithRouter(router, startPromise);
         }
@@ -72,7 +72,7 @@ public class OpenApiServiceVerticle extends AbstractVerticle {
       startPromise.complete();
       log.info(
         "HTTP server for service {} started on port {}",
-        serviceName,
+        getServiceName(),
         serverOptions.getPort()
       );
     } else {
