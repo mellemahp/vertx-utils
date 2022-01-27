@@ -1,17 +1,12 @@
 package com.hmellema.vertxutils.services;
 
-import com.hmellema.vertxutils.handlers.requestid.RequestIdHandler;
 import com.hmellema.vertxutils.routing.OpenApiRouterConfiguration;
-import com.hmellema.vertxutils.routing.OperationConfiguration;
-import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
