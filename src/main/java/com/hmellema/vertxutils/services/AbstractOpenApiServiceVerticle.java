@@ -26,7 +26,8 @@ public abstract class AbstractOpenApiServiceVerticle extends AbstractVerticle {
   @NonNull
   private final String openApiSpecLocation;
 
-  abstract String getServiceName();
+  @NonNull
+  private final String serviceName;
 
   @Override
   public void start(final @NonNull Promise<Void> startPromise)
@@ -35,10 +36,10 @@ public abstract class AbstractOpenApiServiceVerticle extends AbstractVerticle {
       .create(vertx, openApiSpecLocation)
       .onSuccess(
         routerBuilder -> {
-          log.info("Configuring {} Service", getServiceName());
+          log.info("Configuring {} Service", serviceName);
           routerConfiguration.configure(routerBuilder);
 
-          log.info("Deploying {} Service", getServiceName());
+          log.info("Deploying {} Service", serviceName);
           Router router = routerBuilder.createRouter();
           deployHttpServerWithRouter(router, startPromise);
         }
@@ -67,7 +68,7 @@ public abstract class AbstractOpenApiServiceVerticle extends AbstractVerticle {
       startPromise.complete();
       log.info(
         "HTTP server for service {} started on port {}",
-        getServiceName(),
+        serviceName,
         serverOptions.getPort()
       );
     } else {
