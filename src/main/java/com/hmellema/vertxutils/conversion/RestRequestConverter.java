@@ -45,6 +45,8 @@ public class RestRequestConverter<RequestTypeT> {
       final @NonNull RoutingContext context
   ) {
     JsonObject metadata = extractParameters(context);
+    log.info("Metadata: {}", metadata);
+    log.info("Body JSON: {}", context.getBodyAsJson());
     Optional
       .ofNullable(context.getBodyAsJson())
       .ifPresent(bodyJsonData -> metadata.mergeIn(bodyJsonData));
@@ -56,6 +58,8 @@ public class RestRequestConverter<RequestTypeT> {
     MultiMap allParams = MultiMap.caseInsensitiveMultiMap();
     allParams.addAll(context.queryParams());
     allParams.addAll(context.pathParams());
+    log.info("PATH PARAMS: {}", context.pathParams());
+    log.info("QUERY PARAMS: {}", context.queryParams());
 
     return multiMapToJsonObject(allParams);
   }
