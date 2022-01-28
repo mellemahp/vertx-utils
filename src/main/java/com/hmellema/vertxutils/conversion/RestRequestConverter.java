@@ -39,7 +39,7 @@ public class RestRequestConverter<RequestTypeT> {
   ) {
     JsonObject inputData = extractCombinedParams(routingContext);
     log.info("Input DATA: {}", inputData);
-    return objectMapper.convertValue(inputData, inputTypeClass);
+    return inputData.mapTo(inputTypeClass);
   }
 
   private JsonObject extractCombinedParams(
@@ -57,7 +57,7 @@ public class RestRequestConverter<RequestTypeT> {
     MultiMap allParams = MultiMap.caseInsensitiveMultiMap();
     allParams.addAll(context.queryParams());
     allParams.addAll(context.pathParams());
-    
+
     return multiMapToJsonObject(allParams);
   }
 
