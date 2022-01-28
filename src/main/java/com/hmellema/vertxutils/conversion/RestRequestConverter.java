@@ -1,6 +1,5 @@
 package com.hmellema.vertxutils.conversion;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.MultiMap;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -25,9 +24,6 @@ public class RestRequestConverter<RequestTypeT> {
   @NonNull
   private final Class<RequestTypeT> inputTypeClass;
 
-  @NonNull
-  private final ObjectMapper objectMapper;
-
   /**
    * Converts a JSON request into a RequestTypeT object.
    *
@@ -37,9 +33,7 @@ public class RestRequestConverter<RequestTypeT> {
   public RequestTypeT convertToInputType(
       final @NonNull RoutingContext routingContext
   ) {
-    JsonObject inputData = extractCombinedParams(routingContext);
-    log.info("Input DATA: {}", inputData);
-    return inputData.mapTo(inputTypeClass);
+    return extractCombinedParams(routingContext).mapTo(inputTypeClass);
   }
 
   private JsonObject extractCombinedParams(

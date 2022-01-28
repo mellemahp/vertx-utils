@@ -26,12 +26,10 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
   private final RestResponseConverter<ResponseTypeT> responseConverter;
 
   protected BaseRestHandler(
-      @NonNull final Class<RequestTypeT> inputTypeClass,
-      @NonNull final ObjectMapper objectMapper
+      @NonNull final Class<RequestTypeT> inputTypeClass
   ) {
-    this.requestConverter =
-      new RestRequestConverter<>(inputTypeClass, objectMapper);
-    this.responseConverter = new RestResponseConverter<>(objectMapper);
+    this.requestConverter = new RestRequestConverter<>(inputTypeClass);
+    this.responseConverter = new RestResponseConverter<>();
   }
 
   @Override
