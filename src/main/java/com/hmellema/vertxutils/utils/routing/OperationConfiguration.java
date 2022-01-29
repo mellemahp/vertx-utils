@@ -1,6 +1,8 @@
 package com.hmellema.vertxutils.routing;
 
 import com.hmellema.vertxutils.handlers.contenttype.ContentTypeHandler;
+import com.hmellema.vertxutils.handlers.headers.HeaderHandler;
+
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.Operation;
@@ -25,6 +27,9 @@ public class OperationConfiguration {
   private final ContentTypeHandler contentTypeHandler;
 
   @Singular
+  private final List<HeaderHandler> headerHandlers;
+
+  @Singular
   private final List<ValidationHandler> validators;
 
   @Singular
@@ -38,15 +43,17 @@ public class OperationConfiguration {
   * @param operation operation to configure handlers for
   */
   public void configure(@NonNull final Operation operation) {
-    addContentTypeHandler(operation);
-    addValidators(operation);
     operation.handler(contentTypeHandler);
+    addHeaderHandlers(operation);
+    addValidators(operation);
     addBaseHandlers(operation);
     addFailureHandlers(operation);
   }
 
-  private void addContentTypeHandler(@NonNull final Operation operation) {
-    operation.handler(contentTypeHandler);
+  private void addHeaderHandlers(@NonNull final Operation operation) {
+    for (HeaderHandler headerHandler : headerHandlers) {
+      operation.handler(headerHandler);
+    }
   }
 
   private void addValidators(@NonNull final Operation operation) {

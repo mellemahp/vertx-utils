@@ -11,15 +11,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class ContentTypeHandler implements Handler<RoutingContext> {
 
-  @NonNull
-  private final String contentTypeHeaderKey;
+  private static final String CONTENT_TYPE_HEADER = "Content-Type";
 
   @NonNull
   private final String contentTypeHeaderValue;
 
   @Override
-  public void handle(RoutingContext context) {
-    context.response().putHeader(contentTypeHeaderKey, contentTypeHeaderValue);
+  public void handle(@NonNull RoutingContext context) {
+    context.response().putHeader(CONTENT_TYPE_HEADER, contentTypeHeaderValue);
     context.next();
   }
 }

@@ -6,10 +6,9 @@ package com.hmellema.vertxutils.handlers.contenttype;
  */
 public class JsonContentTypeHandler extends ContentTypeHandler {
 
-  private static final String JSON_CONTENT_TYPE = "application/json";
-  private static final String CONTENT_TYPE_HEADER = "Content-Type";
+  private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
 
   public JsonContentTypeHandler() {
-    super(CONTENT_TYPE_HEADER, JSON_CONTENT_TYPE);
+    super(JSON_CONTENT_TYPE);
   }
 }
