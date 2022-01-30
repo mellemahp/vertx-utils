@@ -32,15 +32,17 @@ public class RequestIdHandler implements Handler<RoutingContext> {
   public void handle(@NonNull RoutingContext context) {
     Optional<String> requestIdOptional = getRequestIdFromHeader(context);
     String localRequestId = generateRequestId();
+    String requestHeaderValue;
     if (requestIdOptional.isPresent()) {
       String requestIdroot = requestIdOptional.get();
       ContextualData.put(ROOT_REQUEST_ID_MDC_NAME, requestIdroot);
       ContextualData.put(SUB_REQUEST_ID_MDC_NAME, localRequestId);
-      String requestHeaderValue = String.format(REQUEST_ID_EXISTING_TEMPLATE, requestIdroot, localRequestId);
+      requestHeaderValue = String.format(REQUEST_ID_EXISTING_TEMPLATE, requestIdroot, localRequestId);
     } else {
       ContextualData.put(ROOT_REQUEST_ID_MDC_NAME, localRequestId);
-      String requestHeaderValue = String.format(REQUEST_ID_NEW_TEMPLATE, localRequestId);
+      requestHeaderValue = String.format(REQUEST_ID_NEW_TEMPLATE, localRequestId);
     }
+    context.response().putHeader(REQUEST_ID_HEADER, requestHeaderValue);
     context.next();
   }
 
