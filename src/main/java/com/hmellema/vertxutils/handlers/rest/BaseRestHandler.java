@@ -35,9 +35,14 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
   @Override
   public void handle(@NonNull final RoutingContext context) {
     RequestTypeT input = requestConverter.convertToInputType(context);
-    ResponseTypeT output = this.execute(input, context);
-    responseConverter.createResponse(output, context);
+    this.execute(input, context);
   }
 
-  public abstract ResponseTypeT execute(RequestTypeT input, RoutingContext event);
+  protected void createResponse(@NonNull final ResponseTypeT response, 
+                                @NonNull final RoutingContext context
+  ) {
+    responseConverter.createResponse(response, context);
+  }
+
+  public abstract void execute(RequestTypeT input, RoutingContext event);
 }
