@@ -9,7 +9,9 @@ import java.util.UUID;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-/**
+import static com.hmellema.vertxutils.handlers.requestid.RequestIdConstants.*;
+
+/*
  * Vert.x handler for generating and adding Request ID header to 
  * a response. This handler also adds that request ID as a contextual
  * data field so it can be logged.
@@ -21,12 +23,6 @@ import lombok.NonNull;
  */
 @NoArgsConstructor
 public class RequestIdHandler implements Handler<RoutingContext> {
-
-  private static final String REQUEST_ID_HEADER = "X-Request-ID";
-  private static final String REQUEST_ID_NEW_TEMPLATE = "Root=%s";
-  private static final String REQUEST_ID_EXISTING_TEMPLATE = "Root=%s;Sub=%s";
-  private static final String ROOT_REQUEST_ID_MDC_NAME = "requestId.Root";
-  private static final String SUB_REQUEST_ID_MDC_NAME = "requestId.Sub";
 
   @Override
   public void handle(@NonNull RoutingContext context) {
