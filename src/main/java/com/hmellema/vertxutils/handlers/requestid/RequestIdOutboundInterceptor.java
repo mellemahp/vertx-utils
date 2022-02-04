@@ -8,6 +8,11 @@ import io.vertx.core.eventbus.DeliveryContext;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/**
+ * Outbound Event bus interceptor for adding request id values to contextual data
+ *
+ * @param <T> Type used in message payload (i.e. type used by codec, typically JsonObject)
+ */
 @NoArgsConstructor
 public class RequestIdOutboundInterceptor<T>
   implements Handler<DeliveryContext<T>> {
