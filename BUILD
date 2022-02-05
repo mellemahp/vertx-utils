@@ -125,6 +125,7 @@ java_library(
         "@metrics_deps//:io_micrometer_micrometer_registry_prometheus",
         "@metrics_deps//:io_prometheus_simpleclient_vertx",
         "@metrics_deps//:io_prometheus_simpleclient",
+        "@metrics_deps//:io_micrometer_micrometer_core"
     ],
     visibility = ["//visibility:public"]
 )
@@ -156,6 +157,7 @@ java_library(
         ":preprocessors",
         ":library_logging_deps",
         ":vertx_core_deps",
+        "metrics_dependencies",
         # jackson deps
         "@deps//:com_fasterxml_jackson_core_jackson_core",
         "@deps//:com_fasterxml_jackson_core_jackson_databind",

@@ -77,9 +77,10 @@ maven_install(
 maven_install(
     name = "metrics_deps",
     artifacts = [
-        # vertex metrics adapter
+        # vertx metrics adapter
         "io.vertx:vertx-micrometer-metrics:4.2.3",
         "io.micrometer:micrometer-registry-prometheus:1.8.1",
+        "io.micrometer:micrometer-core:1.8.2",
         # prometheus metrics libraries
         "io.prometheus:simpleclient_vertx:0.14.1",
         "io.prometheus:simpleclient:0.14.1",
