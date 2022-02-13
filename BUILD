@@ -40,7 +40,9 @@ java_plugin(
 
 java_library(
     name = "dagger_lib",
-    exported_plugins = ["dagger_plugin"],
+    exported_plugins = [
+        "dagger_plugin"
+    ],
     exports = [
         "@build_deps//:com_google_dagger_dagger",
         "@build_deps//:javax_inject_javax_inject",
@@ -68,23 +70,6 @@ java_plugin(
     deps = [
         "@build_deps//:com_uber_nullaway_nullaway",
     ],
-)
-
-#######################
-# Base Pre-processors
-#######################
-# This can be re-used by other libraries that depend on this 
-# utils library
-java_library(
-    name = "preprocessors",
-    exports = [
-        # NOTE: ORDER OF PLUGINS DOES MATTER
-        ":lombok",
-        ":vertx_codegen",
-        ":dagger_lib",
-        ":nullaway",
-    ],
-    visibility = ["//visibility:public"],
 )
 
 #########################
@@ -154,7 +139,8 @@ java_library(
     name = "vertx_utils",
     srcs = glob(["src/**/*.java"]),
     deps = [
-        ":preprocessors",
+        ":lombok",
+        ":nullaway",
         ":library_logging_deps",
         ":vertx_core_deps",
         "metrics_dependencies",
