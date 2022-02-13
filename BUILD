@@ -167,7 +167,6 @@ java_library(
     name = "common",
     exports = [
         ":library_logging_deps",
-        ":preprocessors",
         ":vertx_core_deps",
         ":vertx_utils",
         ":metrics_dependencies"
