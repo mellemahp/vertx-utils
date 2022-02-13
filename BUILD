@@ -173,8 +173,7 @@ java_library(
     name = "vertx_utils",
     srcs = glob(["src/**/*.java"]),
     deps = [
-        ":lombok",
-        ":nullaway",
+        ":preprocessors",
         ":library_logging_deps",
         ":vertx_core_deps",
         "metrics_dependencies",
