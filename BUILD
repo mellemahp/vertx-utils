@@ -53,7 +53,7 @@ java_library(
 # Vertx Codegen
 #######################
 java_plugin(
-    name = "vertx_codegen",
+    name = "vertx_codegen_plugin",
     generates_api = 1,
     processor_class = "io.vertx.codegen.CodeGenProcessor",
     deps = [
@@ -62,14 +62,48 @@ java_plugin(
     ],
 )
 
+java_library(
+    name = "vertx_codegen",
+    exported_plugins = [
+        ":vertx_codegen_plugin"
+    ],
+)
+
 #######################
 # Nullaway
 #######################
 java_plugin(
-    name = "nullaway",
+    name = "nullaway_plugin",
     deps = [
         "@build_deps//:com_uber_nullaway_nullaway",
     ],
+)
+
+java_library(
+    name = "nullaway",
+    exported_plugins = [
+        ":nullaway_plugin"
+    ],
+)
+
+#########################
+# All Preprocessors     #
+#########################
+#######################
+# Base Pre-processors
+#######################
+# This can be re-used by other libraries that depend on this
+# utils library
+java_library(
+    name = "preprocessors",
+    exports = [
+        # NOTE: ORDER OF PLUGINS DOES MATTER
+        ":lombok",
+        ":vertx_codegen",
+        ":dagger_lib",
+        ":nullaway",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 #########################
