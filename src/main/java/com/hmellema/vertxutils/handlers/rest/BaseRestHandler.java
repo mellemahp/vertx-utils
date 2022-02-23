@@ -32,8 +32,7 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
 
   protected BaseRestHandler(
           @NonNull final Class<RequestTypeT> inputTypeClass,
-          @NonNull final ContentType contentType,
-          @NonNull Map<String, String> headers
+          @NonNull final ContentType contentType
   ) {
     this.requestConverter = new RestRequestConverter<>(inputTypeClass);
     this.responseConverter = new RestResponseConverter<>();
