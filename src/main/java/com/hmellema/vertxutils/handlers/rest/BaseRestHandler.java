@@ -1,11 +1,13 @@
 package com.hmellema.vertxutils.handlers.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hmellema.vertxutils.conversion.RestRequestConverter;
 import com.hmellema.vertxutils.conversion.RestResponseConverter;
+import com.hmellema.vertxutils.utils.web.ContentType;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import lombok.NonNull;
+
+import java.util.Map;
 
 /**
  * Base handler for rest API routes.
@@ -25,17 +27,24 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
   @NonNull
   private final RestResponseConverter<ResponseTypeT> responseConverter;
 
+  @NonNull
+  private final ContentType contentType;
+
   protected BaseRestHandler(
-      @NonNull final Class<RequestTypeT> inputTypeClass
+          @NonNull final Class<RequestTypeT> inputTypeClass,
+          @NonNull final ContentType contentType,
+          @NonNull Map<String, String> headers
   ) {
     this.requestConverter = new RestRequestConverter<>(inputTypeClass);
     this.responseConverter = new RestResponseConverter<>();
+    this.contentType = contentType;
   }
 
   @Override
   public void handle(@NonNull final RoutingContext context) {
     RequestTypeT input = requestConverter.convertToInputType(context);
-    this.execute(input, context);
+    contentType.setContentType(context);
+    execute(input, context);
   }
 
   protected void createResponse(@NonNull final ResponseTypeT response, 

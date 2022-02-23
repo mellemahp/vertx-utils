@@ -177,6 +177,8 @@ java_library(
         ":library_logging_deps",
         ":vertx_core_deps",
         "metrics_dependencies",
+        # pulls in nullable annotation
+        "@build_deps//:com_google_code_findbugs_jsr305",
         # jackson deps
         "@deps//:com_fasterxml_jackson_core_jackson_core",
         "@deps//:com_fasterxml_jackson_core_jackson_databind",

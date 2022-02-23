@@ -1,15 +1,13 @@
 package com.hmellema.vertxutils.routing;
 
-import com.hmellema.vertxutils.handlers.contenttype.ContentTypeHandler;
 import com.hmellema.vertxutils.handlers.headers.HeaderHandler;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.Operation;
-import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.ValidationHandler;
 import java.util.List;
-import javax.xml.validation.ValidatorHandler;
+
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Singular;
@@ -22,9 +20,6 @@ import lombok.Singular;
  */
 @Builder(builderClassName = "LombokBuilder")
 public class OperationConfiguration {
-
-  @NonNull
-  private final ContentTypeHandler contentTypeHandler;
 
   @Singular
   private final List<HeaderHandler> headerHandlers;
@@ -43,7 +38,6 @@ public class OperationConfiguration {
   * @param operation operation to configure handlers for
   */
   public void configure(@NonNull final Operation operation) {
-    operation.handler(contentTypeHandler);
     addHeaderHandlers(operation);
     addValidators(operation);
     addBaseHandlers(operation);
