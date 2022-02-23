@@ -11,8 +11,9 @@ import lombok.Singular;
 
 import java.util.List;
 
-@Builder
+@Builder(toBuilder = true)
 public class HandlerChain {
+
     @Singular
     private final List<Handler<RoutingContext>> handlers;
 
