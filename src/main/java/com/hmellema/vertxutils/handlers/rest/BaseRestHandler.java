@@ -1,13 +1,12 @@
 package com.hmellema.vertxutils.handlers.rest;
 
 import com.hmellema.vertxutils.conversion.RestRequestConverter;
-import com.hmellema.vertxutils.conversion.RestResponseConverter;
 import com.hmellema.vertxutils.utils.web.ContentType;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import lombok.NonNull;
-
-import java.util.Map;
 
 /**
  * Base handler for rest API routes.
@@ -25,9 +24,6 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
   private final RestRequestConverter<RequestTypeT> requestConverter;
 
   @NonNull
-  private final RestResponseConverter<ResponseTypeT> responseConverter;
-
-  @NonNull
   private final ContentType contentType;
 
   protected BaseRestHandler(
@@ -35,7 +31,6 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
           @NonNull final ContentType contentType
   ) {
     this.requestConverter = new RestRequestConverter<>(inputTypeClass);
-    this.responseConverter = new RestResponseConverter<>();
     this.contentType = contentType;
   }
 
@@ -43,14 +38,10 @@ public abstract class BaseRestHandler<RequestTypeT, ResponseTypeT>
   public void handle(@NonNull final RoutingContext context) {
     RequestTypeT input = requestConverter.convertToInputType(context);
     contentType.setContentType(context);
-    execute(input, context);
+    execute(input, context)
+            .onSuccess(res -> context.response().end(JsonObject.mapFrom(res).encodePrettily()))
+            .onFailure(context::fail);
   }
 
-  protected void createResponse(@NonNull final ResponseTypeT response, 
-                                @NonNull final RoutingContext context
-  ) {
-    responseConverter.createResponse(response, context);
-  }
-
-  public abstract void execute(RequestTypeT input, RoutingContext event);
+  public abstract Future<ResponseTypeT> execute(RequestTypeT input, RoutingContext event);
 }

@@ -1,70 +1,32 @@
 package com.hmellema.vertxutils.routing;
 
-import com.hmellema.vertxutils.handlers.headers.HeaderHandler;
-
-import io.vertx.core.Handler;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.Operation;
-import io.vertx.ext.web.validation.ValidationHandler;
-import java.util.List;
-
+import io.vertx.ext.web.openapi.RouterBuilder;
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.Singular;
 
 /**
  * This class is a helper class to speed up the process of configuring
- * a rest api Operation. It is initialized with the set of handlers you
+ * a rest api Operation. It is initialized with the chain of handlers you
  * want to use on that Operation via a Builder class and then used to configure
- * the relevant rest operation.
+ * the relevant rest operation via the OpenApi router
  */
-@Builder(builderClassName = "LombokBuilder")
+@Builder
 public class OperationConfiguration {
 
-  @Singular
-  private final List<HeaderHandler> headerHandlers;
+    @NonNull
+    private final String operationName;
 
-  @Singular
-  private final List<ValidationHandler> validators;
+    @NonNull
+    private final HandlerChain handlerChain;
 
-  @Singular
-  private final List<Handler<RoutingContext>> handlers;
-
-  @Singular
-  private final List<Handler<RoutingContext>> failureHandlers;
-
-  /**
-  * Adds all configured handlers to the specified rest operation.
-  * @param operation operation to configure handlers for
-  */
-  public void configure(@NonNull final Operation operation) {
-    addHeaderHandlers(operation);
-    addValidators(operation);
-    addBaseHandlers(operation);
-    addFailureHandlers(operation);
-  }
-
-  private void addHeaderHandlers(@NonNull final Operation operation) {
-    for (HeaderHandler headerHandler : headerHandlers) {
-      operation.handler(headerHandler);
+    /**
+     * Adds all configured handlers to the specified rest operation.
+     *
+     * @param routerBuilder routerBuilder to configure operation on
+     */
+    public void configure(@NonNull final RouterBuilder routerBuilder) {
+        Operation operation = routerBuilder.operation(operationName);
+        handlerChain.attach(operation);
     }
-  }
-
-  private void addValidators(@NonNull final Operation operation) {
-    for (ValidationHandler validator : validators) {
-      operation.handler(validator);
-    }
-  }
-
-  private void addBaseHandlers(@NonNull final Operation operation) {
-    for (Handler<RoutingContext> handler : handlers) {
-      operation.handler(handler);
-    }
-  }
-
-  private void addFailureHandlers(@NonNull final Operation operation) {
-    for (Handler<RoutingContext> failureHandler : failureHandlers) {
-      operation.failureHandler(failureHandler);
-    }
-  }
 }

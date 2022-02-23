@@ -42,7 +42,7 @@ public class RestRequestConverter<RequestTypeT> {
     JsonObject metadata = extractParameters(context);
     Optional
       .ofNullable(context.getBodyAsJson())
-      .ifPresent(bodyJsonData -> metadata.mergeIn(bodyJsonData));
+      .ifPresent(metadata::mergeIn);
 
     return metadata;
   }
