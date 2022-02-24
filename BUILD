@@ -188,8 +188,8 @@ java_library(
         "-Xep:NullAway:ERROR",
         # sets packages for nullaway to run on
         "-XepOpt:NullAway:AnnotatedPackages=com.hmellema.vertxutils",
-        # Tries to ignore dagger-generated classes
-        "-XepOpt:NullAway:UnannotatedSubPackages=com.hmellema.vertxutils.routing",
+        # Nullaway does not like lombok builders
+        "-XepOpt:NullAway:UnannotatedSubPackages=com.hmellema.vertxutils.routing,com.hmellema.vertxutils.handlers.errorhandlers"
     ],
     visibility = ["//visibility:public"],
 )
