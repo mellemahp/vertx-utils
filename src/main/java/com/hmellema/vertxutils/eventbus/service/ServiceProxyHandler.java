@@ -7,7 +7,7 @@ import java.util.function.Function;
 /**
  * @param <RequestTypeT>
  */
-public abstract class ServiceProxyHandler<RequestTypeT> implements Handler<Void> {
+public abstract class ServiceProxyHandler<RequestTypeT> implements Handler<Message<RequestTypeT>> {
   public static final int DEFAULT_NO_HANDLER_CODE = 400;
   public static final String ACTION_HEADER = "action";
   public static final String NO_ACTION_ERROR_MSG = "action not specified";
