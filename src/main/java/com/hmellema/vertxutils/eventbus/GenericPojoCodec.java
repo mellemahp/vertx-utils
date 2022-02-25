@@ -2,7 +2,9 @@ package com.hmellema.vertxutils.eventbus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.MessageCodec;
 import java.io.IOException;
 
@@ -80,4 +82,14 @@ public class GenericPojoCodec<MessagePojoT>
   public byte systemCodecID() {
     return -1;
   }
+
+  public void registerWithEventBus(Vertx vertx) {
+    EventBus eventBus = vertx.eventBus();
+    try {
+      eventBus.registerDefaultCodec(cls, this);
+    } catch (IllegalStateException ex) {
+      log.debug("Codec for class: {} already registered. Skipping", cls);
+    }
+  }
+
 }
