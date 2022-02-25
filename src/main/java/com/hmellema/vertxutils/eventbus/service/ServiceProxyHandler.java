@@ -7,12 +7,12 @@ import java.util.function.Function;
 /**
  * @param <RequestTypeT>
  */
-public interface ServiceProxyHandler<RequestTypeT> extends Handler<Void> {
-  int DEFAULT_NO_HANDLER_CODE = 400;
-  String ACTION_HEADER = "action";
-  String NO_ACTION_ERROR_MSG = "action not specified";
+public abstract class ServiceProxyHandler<RequestTypeT> implements Handler<Void> {
+  public static final int DEFAULT_NO_HANDLER_CODE = 400;
+  public static final String ACTION_HEADER = "action";
+  public static final String NO_ACTION_ERROR_MSG = "action not specified";
 
-  default String getAction(Message<RequestTypeT> msg) {
+  private String getAction(Message<RequestTypeT> msg) {
     String action = msg.headers().get(ACTION_HEADER);
     if (action == null) {
       throw new IllegalStateException(NO_ACTION_ERROR_MSG);
@@ -20,7 +20,8 @@ public interface ServiceProxyHandler<RequestTypeT> extends Handler<Void> {
     return action;
   }
 
-  default void handle(Message<RequestTypeT> msg) {
+  @Override
+  public void handle(Message<RequestTypeT> msg) {
     String action = getAction(msg);
     Function<Message<RequestTypeT>, Void> handler = selectFunction(action);
     if (handler == null) {
@@ -30,6 +31,6 @@ public interface ServiceProxyHandler<RequestTypeT> extends Handler<Void> {
     }
   }
 
-  Function<Message<RequestTypeT>, Void> selectFunction(String action);
+  public abstract Function<Message<RequestTypeT>, Void> selectFunction(String action);
 
 }
