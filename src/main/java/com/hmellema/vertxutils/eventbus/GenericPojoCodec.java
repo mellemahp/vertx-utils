@@ -1,16 +1,12 @@
 package com.hmellema.vertxutils.eventbus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+
+import io.vertx.core.json.jackson.DatabindCodec;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 public class GenericPojoCodec<MessagePojoT>
   implements MessageCodec<MessagePojoT, MessagePojoT> {
 
-  @NonNull
-  private final Class<MessagePojoT> cls;
+  private static final ObjectMapper objectMapper = DatabindCodec.prettyMapper();
 
   @NonNull
-  private final ObjectMapper objectMapper;
+  private final Class<MessagePojoT> cls;
 
   @Override
   public void encodeToWire(Buffer buffer, MessagePojoT message) {
