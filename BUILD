@@ -62,21 +62,10 @@ java_plugin(
     ],
 )
 
-##### Rich interface for actors (RIFA) codegen ####
-java_plugin(
-    name = "vertx_rifa_plugin",
-    generates_api = 1,
-    processor_class = "io.github.nsforth.vxrifa.VxRifaAnnotationProcessor",
-    deps = [
-        "@build_deps//:io_github_nsforth_vxrifa",
-    ],
-)
-
 java_library(
     name = "vertx_codegen",
     exported_plugins = [
-        ":vertx_codegen_plugin",
-        ":vertx_rifa_plugin"
+        ":vertx_codegen_plugin"
     ],
 )
 

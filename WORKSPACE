@@ -46,9 +46,7 @@ maven_install(
         "org.projectlombok:lombok:1.18.22",
         # vertx codegen
         "io.vertx:vertx-codegen:4.2.4",
-        "io.vertx:vertx-service-proxy:4.2.4",
-        # vertx RIFA
-        "io.github.nsforth:vxrifa:1.4.0"
+        "io.vertx:vertx-service-proxy:4.2.4"
     ],
     repositories = MAVEN_REPOS,
 )
